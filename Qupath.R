@@ -4,7 +4,7 @@ library(dplyr)
 library(readr)
 
 
-path = "C:/Users/edmondsonef/Desktop/QuPath/Jagoda/PHL 193070A/PSMA/"
+path = "C:/Users/edmondsonef/Desktop/QuPath/Zheng/PHL 154543/annotations/"
 #path = "P:/archive/PHL/Edmondson/QuPath/NCL/ADME Tox 180/iNOS/"
 
 setwd(path)
@@ -35,21 +35,89 @@ library(Rmisc)
 ###########
 ###########
 
-my_mean = aggregate(data$'CD3 (cells per mm^2)', by=list(data$Group), mean) ; colnames(my_mean)=c("Group" , "mean")
-my_CI = aggregate(data$'CD3 (cells per mm^2)', by=list(data$Group) , FUN = function(x) t.test(x)$conf.int) ; colnames(my_CI)=c("Group" , "CI")
+my_mean1 = aggregate(data$'CD45: Num Positive per mm^2', by=list(data$Group), mean) ; colnames(my_mean1)=c("Group" , "mean")
+my_CI1 = aggregate(data$'CD45: Num Positive per mm^2', by=list(data$Group) , FUN = function(x) t.test(x)$conf.int) ; colnames(my_CI1)=c("Group" , "CI")
+my_info1 = merge(my_mean1, my_CI, by.x=1 , by.y=1)
+my_info1$CIdiff = ((my_CI1$CI[,2] - my_CI1$CI[,1])/2)
+
+CD45 <- ggplot(data) + 
+  geom_point(data = my_info1, aes(x = Group, y = my_info1$mean), color = "Grey", size = 5) +
+  scale_y_continuous(name = "CD45+ per mm^2") +
+  geom_errorbar(data = my_info1, aes(x = Group, y = CIdiff, ymin = mean - CIdiff, ymax = mean + CIdiff), color = "grey", width = 0.2 , size=1) +
+  theme_bw(base_size = 18) +
+  geom_jitter(aes(x = data$Group, y = data$'CD45: Num Positive per mm^2'), width = 0.2, size = 4) +
+  theme(axis.text.x=element_text(angle=25,hjust=1)) +
+  theme(axis.title.x=element_blank(), legend.position = c(.95,.95), legend.title = element_blank(), legend.justification=c("right", "top"), legend.box.margin = margin(6,6,6,6))
+
+#
+
+my_mean = aggregate(data$'CD11b: Num Positive per mm^2', by=list(data$Group), mean) ; colnames(my_mean)=c("Group" , "mean")
+my_CI = aggregate(data$'CD11b: Num Positive per mm^2', by=list(data$Group) , FUN = function(x) t.test(x)$conf.int) ; colnames(my_CI)=c("Group" , "CI")
 my_info = merge(my_mean, my_CI, by.x=1 , by.y=1)
 my_info$CIdiff = ((my_CI$CI[,2] - my_CI$CI[,1])/2)
 
-ggplot(data) + 
+CD11b <- ggplot(data) + 
   geom_point(data = my_info, aes(x = Group, y = my_info$mean), color = "Grey", size = 5) +
-  scale_y_continuous(name = "CD3 (cells per mm^2)") +
+  scale_y_continuous(name = "CD11b+ per mm^2") +
   geom_errorbar(data = my_info, aes(x = Group, y = CIdiff, ymin = mean - CIdiff, ymax = mean + CIdiff), color = "grey", width = 0.2 , size=1) +
   theme_bw(base_size = 18) +
-  geom_jitter(aes(x = data$Group, y = data$'CD3 (cells per mm^2)'), width = 0.2, size = 4) +
-  #theme(axis.text.x=element_text(angle=25,hjust=1)) +
+  geom_jitter(aes(x = data$Group, y = data$'CD11b: Positive per mm^2'), width = 0.2, size = 4) +
+  theme(axis.text.x=element_text(angle=25,hjust=1)) +
   theme(axis.title.x=element_blank(), legend.position = c(.95,.95), legend.title = element_blank(), legend.justification=c("right", "top"), legend.box.margin = margin(6,6,6,6))
 
+#
 
+my_mean3 = aggregate(data$'Microvessel Density -- Number of vessels per unit area (um2)', by=list(data$Group), mean) ; colnames(my_mean3)=c("Group" , "mean")
+my_CI3 = aggregate(data$'Microvessel Density -- Number of vessels per unit area (um2)', by=list(data$Group) , FUN = function(x) t.test(x)$conf.int) ; colnames(my_CI3)=c("Group" , "CI")
+my_info3 = merge(my_mean3, my_CI3, by.x=1 , by.y=1)
+my_info3$CIdiff = ((my_CI3$CI[,2] - my_CI3$CI[,1])/2)
+
+MVD <- ggplot(data) + 
+  geom_point(data = my_info3, aes(x = Group, y = my_info3$mean), color = "Grey", size = 5) +
+  scale_y_continuous(name = "Vessels per um2") +
+  geom_errorbar(data = my_info3, aes(x = Group, y = CIdiff, ymin = mean - CIdiff, ymax = mean + CIdiff), color = "grey", width = 0.2 , size=1) +
+  theme_bw(base_size = 18) +
+  geom_jitter(aes(x = data$Group, y = data$'Microvessel Density -- Number of vessels per unit area (um2)'), width = 0.2, size = 4) +
+  theme(axis.text.x=element_text(angle=25,hjust=1)) +
+  theme(axis.title.x=element_blank(), legend.position = c(.95,.95), legend.title = element_blank(), legend.justification=c("right", "top"), legend.box.margin = margin(6,6,6,6))
+
+#
+
+my_mean4 = aggregate(data$'Murine PD-L1: H-score', by=list(data$Group), mean) ; colnames(my_mean4)=c("Group" , "mean")
+my_CI4 = aggregate(data$'Murine PD-L1: H-score', by=list(data$Group) , FUN = function(x) t.test(x)$conf.int) ; colnames(my_CI4)=c("Group" , "CI")
+my_info4 = merge(my_mean4, my_CI4, by.x=1 , by.y=1)
+my_info4$CIdiff = ((my_CI4$CI[,2] - my_CI4$CI[,1])/2)
+
+muPDL1 <- ggplot(data) + 
+  geom_point(data = my_info4, aes(x = Group, y = my_info4$mean), color = "Grey", size = 5) +
+  scale_y_continuous(name = "Murine PD-L1: H-score") +
+  geom_errorbar(data = my_info4, aes(x = Group, y = CIdiff, ymin = mean - CIdiff, ymax = mean + CIdiff), color = "grey", width = 0.2 , size=1) +
+  theme_bw(base_size = 18) +
+  geom_jitter(aes(x = data$Group, y = data$'Murine PD-L1: H-score'), width = 0.2, size = 4) +
+  theme(axis.text.x=element_text(angle=25,hjust=1)) +
+  theme(axis.title.x=element_blank(), legend.position = c(.95,.95), legend.title = element_blank(), legend.justification=c("right", "top"), legend.box.margin = margin(6,6,6,6))
+
+#
+
+my_mean5 = aggregate(data$'Human PD-L1: H-score', by=list(data$Group), mean) ; colnames(my_mean5)=c("Group" , "mean")
+my_CI5 = aggregate(data$'Human PD-L1: H-score', by=list(data$Group) , FUN = function(x) t.test(x)$conf.int) ; colnames(my_CI5)=c("Group" , "CI")
+my_info5 = merge(my_mean5, my_CI5, by.x=1 , by.y=1)
+my_info5$CIdiff = ((my_CI5$CI[,2] - my_CI5$CI[,1])/2)
+
+huPDL1 <- ggplot(data) + 
+  geom_point(data = my_info5, aes(x = Group, y = my_info5$mean), color = "Grey", size = 5) +
+  scale_y_continuous(name = "Human PD-L1: H-score") +
+  geom_errorbar(data = my_info5, aes(x = Group, y = CIdiff, ymin = mean - CIdiff, ymax = mean + CIdiff), color = "grey", width = 0.2 , size=1) +
+  theme_bw(base_size = 18) +
+  geom_jitter(aes(x = data$Group, y = data$'Human PD-L1: H-score'), width = 0.2, size = 4) +
+  theme(axis.text.x=element_text(angle=25,hjust=1)) +
+  theme(axis.title.x=element_blank(), legend.position = c(.95,.95), legend.title = element_blank(), legend.justification=c("right", "top"), legend.box.margin = margin(6,6,6,6))
+
+#
+
+ggarrange(CD45, CD11b, huPDL1, muPDL1, MVD, 
+          labels = c("A", "B", "C", "D", "E"),
+          ncol = 2, nrow = 3)
 
 ########
 ###########
@@ -202,7 +270,7 @@ plot(data$Age, data$'xe', main="Scatterplot Example",
 abline(lm(data$'PCR CT Value'~data$Age), col="red") # regression line (y~x) 
 lines(lowess(data$'PCR CT Value',data$Age), col="blue") # lowess line (x,y)
 
-scatterplot(data$'Metastatic Density (% area, visual estimate)' ~ data$Age | data$Group, data=data, 
+scatterplot(data$'CD45: Num Positive per mm^2' ~ data$"Murine PD-L1: H-score" | data$Group, data=data, 
             xlab="Days", ylab="Allograft Metastatic Density", 
             main="Enhanced Scatter Plot")
 
@@ -245,48 +313,39 @@ library(Rmisc)
 
 
 my.formula <- y ~ x
-pfecal1 <- ggplot(data = data1, aes(x = data1$'Urine', y = data1$'Dry Fecal Pellet'), na.rm=TRUE) +
+ggplot(data = data, aes(x = data$'CD45: Num Positive per mm^2', y = data$'y'), na.rm=TRUE) +
   geom_smooth(method = "lm", se=FALSE, color="red", formula = my.formula, na.rm=TRUE) +
   stat_poly_eq(formula = my.formula, 
                aes(label = paste(..eq.label.., ..rr.label.., sep = "~~~")), 
                parse = TRUE, na.rm=TRUE) +  
   geom_point(na.rm=TRUE)+
-  scale_y_continuous(name = "Fecal Pellet qPCR (CT Values)") +
-  scale_x_continuous(name = "Urine qPCR (CT Values)", limits = c(20, 36)) +
+  scale_y_continuous(name = "Murine PD-L1") +
+  scale_x_continuous(name = "CD45+ cells per mm^2") + #, limits = c(20, 36)) +
     theme_bw(base_size = 16)      
 
-pswab1 <- ggplot(data = data1, aes(x = data1$'Urine', y = data1$'swab'), na.rm=TRUE) +
-  geom_smooth(method = "lm", se=FALSE, color="red", formula = my.formula, na.rm=TRUE) +
-  stat_poly_eq(formula = my.formula, 
-               aes(label = paste(..eq.label.., ..rr.label.., sep = "~~~")), 
-               parse = TRUE, na.rm=TRUE) +  
+pswab1 <- ggplot(data = data1, aes(x = data1$'Urine.log', y = data1$'Swab.log'), na.rm=TRUE) +
+  #geom_smooth(method = "lm", se=FALSE, color="red", formula = my.formula, na.rm=TRUE) +
+  stat_smooth(method="lm",formula=y~log(x),fill="red") +  
   geom_point(na.rm=TRUE)+
-  scale_y_continuous(name = "Swab qPCR (CT Values)") +
-  scale_x_continuous(name = "Urine qPCR (CT Values)", limits = c(20, 31)) +
-  theme_bw(base_size = 16) +
-  scale_y_log10() 
+  scale_y_continuous(name = "Swab qPCR (Copy Number)") +
+  scale_x_continuous(name = "Urine qPCR (Copy Number)") +
+                  theme_bw(base_size = 16) 
 
-pblood1 <- ggplot(data = data1, aes(x = data1$'Urine', y = data1$'Blood'), na.rm=TRUE) +
-  geom_smooth(method = "lm", se=FALSE, color="red", formula = my.formula, na.rm=TRUE) +
-  stat_poly_eq(formula = my.formula, 
-               aes(label = paste(..eq.label.., ..rr.label.., sep = "~~~")), 
-               parse = TRUE, na.rm=TRUE) +  
+pblood1 <- ggplot(data = data1, aes(x = data1$'Urine.log', y = data1$'Blood.log'), na.rm=TRUE) +
+  #geom_smooth(method = "lm", se=FALSE, color="red", formula = my.formula, na.rm=TRUE) +
+  stat_smooth(method="lm",formula=y~log(x),fill="red") +  
   geom_point(na.rm=TRUE)+
-  scale_y_continuous(name = "Blood qPCR (CT Values)") +
-  scale_x_continuous(name = "Urine qPCR (CT Values)", limits = c(20, 36)) +
+  scale_y_continuous(name = "Blood qPCR (Copy Number)") +
+  scale_x_continuous(name = "Urine qPCR (Copy Number)") + #, limits = c(20, 36)) +
   theme_bw(base_size = 16)  
 
-pother1 <- ggplot(data = data1, aes(x = data1$'Dry Fecal Pellet', y = data1$'swab'), na.rm=TRUE) +
-  geom_smooth(method = "lm", se=FALSE, color="red", formula = my.formula, na.rm=TRUE) +
-  stat_poly_eq(formula = my.formula, 
-               aes(label = paste(..eq.label.., ..rr.label.., sep = "~~~")), 
-               parse = TRUE, na.rm=TRUE) +  
+pother1 <- ggplot(data = data1, aes(x = data1$'Fecal Pellet.log', y = data1$'Swab.log'), na.rm=TRUE) +
+  #geom_smooth(method = "lm", se=FALSE, color="red", formula = my.formula, na.rm=TRUE) +
+  stat_smooth(method="lm",formula=y~log(x),fill="red") +  
   geom_point(na.rm=TRUE)+
-  scale_y_continuous(name = "Swab qPCR (CT Values)") +
-  scale_x_continuous(name = "Fecal qPCR (CT Values)") +
+  scale_y_continuous(name = "Swab qPCR (Copy Number)") +
+  scale_x_continuous(name = "Fecal qPCR (Copy Number)") +
   theme_bw(base_size = 16)  
-
-
 
 ggarrange(pfecal1, pswab1, pblood1, pother1, 
           labels = c("A", "B", "C", "D"),
