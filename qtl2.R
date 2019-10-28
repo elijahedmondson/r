@@ -1,4 +1,8 @@
-
-
-install.packages("qtl2", repos="https://rqtl.org/qtl2cran")
 library(qtl2)
+library(devtools)
+library(yaml)
+library(jsonlite)
+library(data.table)
+library(RcppEigen)
+library(RSQLite)
+library(qtl)
