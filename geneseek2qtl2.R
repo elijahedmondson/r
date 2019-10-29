@@ -7,19 +7,23 @@
 
 # file containing allele codes for GigaMUGA data
 #   - from GM_processed_files.zip, https://doi.org/10.6084/m9.figshare.5404759
-codefile <- "GM/GM_allelecodes.csv"
+codefile <- "C:/Users/edmondsonef/Desktop/AT_HS/AT_HS.NPT_Snps/GM_processed_files/GM/GM_allelecodes.csv"
+
 
 # input files with GigaMUGA genotypes
 #  - can be a single file or a vector of multiple files
 #  - if samples appear in multiple files, the genotypes in later files
 #    will be used in place of genotypes in earlier files
 #  - files can be gzipped (".gz" extension)
-ifiles <- c("batch1_FinalReport.txt",
-            "batch2_FinalReport.txt")
+ifiles <- c("C:/Users/edmondsonef/Desktop/AT_HS/AT_HS.NPT_Snps/AT_SNPs/CSU_batch1/batch1_FinalReport/batch1_FinalReport.txt")#,
+            "C:/Users/edmondsonef/Desktop/AT_HS/AT_HS.NPT_Snps/AT_SNPs/CSU_batch2/batch2_FinalReport/batch2_FinalReport.txt",
+            #"C:/Users/edmondsonef/Desktop/AT_HS/AT_HS.NPT_Snps/AT_SNPs/CSU_batch3/batch3_FinalReport/batch3_FinalReport.txt",
+            "C:/Users/edmondsonef/Desktop/AT_HS/AT_HS.NPT_Snps/AT_SNPs/CSU_batch4/batch4_FinalReport/batch4_FinalReport.txt",
+            "C:/Users/edmondsonef/Desktop/AT_HS/AT_HS.NPT_Snps/AT_SNPs/CSU_batch5/batch5_FinalReport/batch5_FinalReport.txt")
 
 # file "stem" for output files
 # output files will be like "gm4qtl2_geno19.csv"
-ostem <- "gm4qtl2"
+ostem <- "Data/gm4qtl2"
 
 ##############################
 # define a couple of functions

@@ -1,3 +1,14 @@
+
+data <- read.delim("C:/Users/edmondsonef/Desktop/AT_HS/AT_HS.NPT_Snps/AT_SNPs/CSU_batch2/batch2_FinalReport/batch2_FinalReport.txt", skip= 9)
+
+# subset founder genotypes
+
+founder <- subset(data, data$Sample.ID %in% c('A/J F', 'A/J M', 'C57 F', 'C57 M', 'CBA M', 'CBA F',
+                                           'C3H F', 'C3H M', 'BALB F', 'BALB M', 'DBA M', 'DBA F',
+                                           'AKR F', 'AKR M', 'LP M', 'LP F'))
+
+######EFE#######
+
 # parse muga data and create simplified files
 
 library(data.table)
